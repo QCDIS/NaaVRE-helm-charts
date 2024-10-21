@@ -1,0 +1,14 @@
+argo-workflows:
+  enabled: true
+
+jupyterhub:
+  enabled: true
+
+k8s-secret-creator:
+  enabled: true
+
+keycloak:
+  enabled: true
+
+vrepaas:
+  enabled: true

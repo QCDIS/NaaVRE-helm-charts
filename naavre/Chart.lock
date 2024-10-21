@@ -1,0 +1,18 @@
+dependencies:
+- name: argo-workflows
+  repository: https://argoproj.github.io/argo-helm
+  version: 0.33.1
+- name: jupyterhub
+  repository: https://jupyterhub.github.io/helm-chart/
+  version: 3.3.7
+- name: k8s-secret-creator
+  repository: oci://ghcr.io/qcdis/charts
+  version: 0.1.0
+- name: keycloak
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.1.6
+- name: vrepaas
+  repository: oci://ghcr.io/qcdis/charts
+  version: 0.5.7
+digest: sha256:698b9df9241049d248b00c572012ee9b87f5ad0eee6375a44a48bc158e185513
+generated: "2024-10-08T14:46:40.504025501+02:00"
