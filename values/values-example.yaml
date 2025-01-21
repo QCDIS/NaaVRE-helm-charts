@@ -7,3 +7,5 @@ global:
       apiToken: <a random k8s-secret-creator API token>
     keycloak:
       naavreClientSecret: <a random OAuth client secret>
+    vrepaas:
+      apiToken: <a random vrepaas API token>
