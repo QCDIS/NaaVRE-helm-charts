@@ -11,10 +11,6 @@ argo-workflows:
         cpu: 1800m
         memory: 1024Mi
   controller:
-    serviceMonitor:
-      enabled: true
-    metricsConfig:
-      enabled: true
     resources:
       requests:
         cpu: 900m
