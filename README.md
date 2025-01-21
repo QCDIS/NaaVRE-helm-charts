@@ -8,7 +8,7 @@ Deployment is done in two steps:
 ```shell
 helm dependency build naavre
 helm template values/ --output-dir values/rendered/
-helm -n naavre upgrade --install naavre naavre/ $(find values/rendered/naavre-values/templates -type f | xargs -I{} echo -n " -f {}")
+helm -n naavre upgrade --install naavre naavre/ $(find values/rendered/values/templates -type f | xargs -I{} echo -n " -f {}")
 ```
 
 Files in `values/rendered/` should never be edited directly. Instead, change `values/values.yaml` and `values/templates/*.yaml`, and re-render the `values` chart.

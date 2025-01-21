@@ -1,6 +1,6 @@
 apiVersion: v2
-name: naavre-values
-description: Values for NaaVRE sub-charts
+name: values
+description: Generate values for the naavre chart
 
 # A chart can be either an 'application' or a 'library' chart.
 #
