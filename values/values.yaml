@@ -13,6 +13,18 @@ global:
       podAnnotations:
         backup.velero.io/backup-volumes: pvc-volume,emptydir-volume
 
+argoWorkflows:
+  enabled: true
+  ingress:
+    basePath: /argowf
+  # TODO:
+  #   - Create secret `argo-sso` containing
+  #     data:
+  #       client-id: naavre
+  #       client-secret: {{ .Values.global.secrets.keycloak.naavreClientSecret | default "" | b64enc }}
+  #   - Create executor role
+  #   - Propagate SA token
+
 k8sSecretCreator:
   enabled: true
   ingress:

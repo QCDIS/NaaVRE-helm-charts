@@ -1,2 +1,94 @@
 argo-workflows:
-  enabled: false
+  enabled: {{ .Values.argoWorkflows.enabled }}
+
+  singleNamespace: true
+  executor:
+    resources:
+      requests:
+        cpu: 900m
+        memory: 512Mi
+      limits:
+        cpu: 1800m
+        memory: 1024Mi
+  controller:
+    serviceMonitor:
+      enabled: true
+    metricsConfig:
+      enabled: true
+    resources:
+      requests:
+        cpu: 900m
+        memory: 512Mi
+      limits:
+        cpu: 1800m
+        memory: 1024Mi
+    containerRuntimeExecutor: emissary
+    parallelism: 8
+    resourceRateLimit:
+      limit: 8
+      burst: 5
+    workflowDefaults:
+      spec:
+        # must complete in 2d
+        activeDeadlineSeconds: 172800
+        # keep completed workflows for min failed for 5min
+        ttlStrategy:
+          secondsAfterCompletion: 300
+          secondsAfterFailure: 300
+          secondsAfterSuccess: 300
+          # podGC:
+          #   strategy: OnWorkflowCompletion
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 10
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: workflows.argoproj.io/completed
+                        operator: In
+                        values:
+                          - false
+                  topologyKey: kubernetes.io/hostname
+  server:
+    resources:
+      requests:
+        ephemeral-storage: 512Mi
+    extraArgs:
+      - --auth-mode=sso
+      - --auth-mode=client
+    enabled: true
+    baseHref: "/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}/"
+    serviceType: ClusterIP
+    sso:
+      enabled: true
+      issuer: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre"
+      sessionExpiry: 240h
+      clientId:
+        name: argo-sso
+        key: client-id  # FIXME
+      clientSecret:
+        name: argo-sso
+        key: client-secret  # FIXME
+      redirectUrl: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}/oauth2/callback"
+      rbac:
+        enabled: false
+      insecureSkipVerify: false
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+        nginx.ingress.kubernetes.io/add-base-url: "true"
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          proxy_set_header Accept-Encoding "";
+          sub_filter '<base href="/">' '<base href="/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}/">';
+          sub_filter_once on;
+          more_set_headers "X-Accel-Buffering: no";
+      hosts:
+        - {{ .Values.global.ingress.domain }}
+      paths:
+        - /{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}(/|$)(.*)
+      tls: []
