@@ -9,3 +9,11 @@ global:
       naavreClientSecret: <a random OAuth client secret>
     vrepaas:
       apiToken: <a random vrepaas API token>
+
+  externalServices:
+    notebookSearch:
+      apiEndpoint: "<Notebook search API endpoint URL>"
+      apiToken: <API token>
+    GitHubRepoNaaVRECells:
+      url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
+      token: "<Token generated following the instructions from the template>"

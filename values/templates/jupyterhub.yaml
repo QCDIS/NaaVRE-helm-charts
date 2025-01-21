@@ -1,2 +1,84 @@
 jupyterhub:
-  enabled: false
+  enabled: {{ .Values.jupyterhub.enabled }}
+
+  hub:
+    concurrentSpawnLimit: 10
+    consecutiveFailureLimit: 16
+    activeServerLimit: 16
+    namedServerLimitPerUser: 1
+    shutdownOnLogout: true
+    baseUrl: "/{{ trimAll "/" .Values.jupyterhub.ingress.basePAth }}"
+    config:
+      GenericOAuthenticator:
+        login_service: keycloak
+        username_claim: preferred_username
+        userdata_params:
+          state: state
+        claim_groups_key: groups
+        allowed_groups:
+          - users
+        admin_groups:
+          - admins
+        oauth_callback_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.jupyterhub.ingress.basePAth }}/hub/oauth_callback"
+        client_id: naavre
+        client_secret: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
+        authorize_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/auth"
+        token_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/token"
+        userdata_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/userinfo"
+      JupyterHub:
+        authenticator_class: generic-oauth
+  ingress:
+    enabled: true
+    hosts:
+      - "{{ .Values.global.ingress.domain }}"
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/add-base-url: "true"
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "600m"
+      nginx.org/client-max-body-size: "600m"
+  proxy:
+    service:
+      type: ClusterIP
+  singleuser:
+    startTimeout: 600
+    extraAnnotations:
+      {{- toYaml .Values.global.common.velero.podAnnotations | nindent 6 }}
+    extraFiles:
+      jupyter_notebook_config.json:
+        mountPath: /etc/jupyter/jupyter_notebook_config.json
+        data:
+          ServerApp:
+            iopub_data_rate_limit: 1.0e10
+            iopub_msg_rate_limitFloat: 3000
+    memory:
+      limit: 2G
+      guarantee: 1G
+    storage:
+      capacity: 10Gi
+    cpu:
+      limit: 1.25
+      guarantee: 1.1
+    lifecycleHooks:
+      postStart:
+        exec:
+          command: ["sh", "-c", "/tmp/init_script.sh"]
+    image:
+      name: "{{ .Values.jupyterhub.singleuser.image.name }}"
+      tag: "{{ .Values.jupyterhub.singleuser.image.tag }}"
+      pullPolicy: IfNotPresent
+    defaultUrl: "/lab"
+    extraEnv:
+      JUPYTER_ALLOW_INSECURE_WRITES: "1" # This is needed because the default mount for csi is --file-mode 0666. If we set it to 0600 we get error in the postStart hook
+      BASE_IMAGE_TAGS_URL: "{{ .Values.jupyterhub.singleuser.extraEnv.BASE_IMAGE_TAGS_URL }}"
+      JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
+      MODULE_MAPPING_URL: "{{ .Values.jupyterhub.singleuser.extraEnv.MODULE_MAPPING_URL }}"
+      API_ENDPOINT: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.vrepaas.vreapi.ingress.basePath }}"
+      NAAVRE_API_TOKEN: "{{ .Values.global.secrets.vrepaas.apiToken }}"
+      SEARCH_API_ENDPOINT: "{{ .Values.global.externalServices.notebookSearch.apiEndpoint }}"
+      SEARCH_API_TOKEN: "{{ .Values.global.externalServices.notebookSearch.apiToken }}"
+      VLAB_SLUG: "{{ .Values.jupyterhub.vlabSlug }}"
+      CELL_GITHUB: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.url }}"
+      CELL_GITHUB_TOKEN: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.token }}"
+      PROJ_LIB: /venv/share/proj
+      ARGO_WF_SPEC_SERVICEACCOUNT: executor  # FIXME

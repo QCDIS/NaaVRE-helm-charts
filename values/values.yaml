@@ -15,6 +15,14 @@ global:
       podAnnotations:
         backup.velero.io/backup-volumes: pvc-volume,emptydir-volume
 
+  externalServices:
+    notebookSearch:
+      apiEndpoint:
+      apiToken:
+    GitHubRepoNaaVRECells:
+      url:
+      token:
+
 argoWorkflows:
   enabled: true
   ingress:
@@ -26,6 +34,19 @@ argoWorkflows:
   #       client-secret: {{ .Values.global.secrets.keycloak.naavreClientSecret | default "" | b64enc }}
   #   - Create executor role
   #   - Propagate SA token
+
+jupyterhub:
+  enabled: true
+  ingress:
+    basePAth: /vl-openlab
+  vlabSlug: openlab
+  singleuser:
+    image:
+      name: qcdis/n-a-a-vre
+      tag: v2.5.0
+    extraEnv:
+      BASE_IMAGE_TAGS_URL: "https://github.com/QCDIS/NaaVRE-flavors/releases/download/v0.20.2/base_image_tags.json"
+      MODULE_MAPPING_URL: https://raw.githubusercontent.com/QCDIS/NaaVRE-conf/main/module_mapping.json
 
 k8sSecretCreator:
   enabled: true
