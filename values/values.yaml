@@ -1,14 +1,18 @@
 global:
-  ingressDomain: naavre-dev.minikube.test
+  ingress:
+    domain: example.org
+
+  secrets:
+    keycloak:
+      naavreClientSecret:
 
   common:
     velero:
       podAnnotations:
         backup.velero.io/backup-volumes: pvc-volume,emptydir-volume
 
-  keycloak:
-    adminUser: admin
-    adminPassword: admin
-    postgresql:
-      postgresPassword: fake_postgres_password
-      Password: fake_password
+keycloak:
+  enabled: true
+  ingress:
+    basePath: /auth
+

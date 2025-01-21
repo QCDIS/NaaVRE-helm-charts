@@ -1,0 +1,7 @@
+global:
+  ingress:
+    domain: example.com
+
+  secrets:
+    keycloak:
+      naavreClientSecret: <a random OAuth client secret>
