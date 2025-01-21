@@ -3,5 +3,7 @@ global:
     domain: example.com
 
   secrets:
+    k8sSecretCreator:
+      apiToken: <a random k8s-secret-creator API token>
     keycloak:
       naavreClientSecret: <a random OAuth client secret>

@@ -3,6 +3,8 @@ global:
     domain: example.org
 
   secrets:
+    k8sSecretCreator:
+      apiToken:
     keycloak:
       naavreClientSecret:
 
@@ -10,6 +12,11 @@ global:
     velero:
       podAnnotations:
         backup.velero.io/backup-volumes: pvc-volume,emptydir-volume
+
+k8sSecretCreator:
+  enabled: true
+  ingress:
+    basePath: /k8s-secret-creator
 
 keycloak:
   enabled: true
