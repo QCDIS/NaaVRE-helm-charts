@@ -1,4 +1,6 @@
 global:
+  namespace: naavre
+
   ingress:
     domain: example.org
 

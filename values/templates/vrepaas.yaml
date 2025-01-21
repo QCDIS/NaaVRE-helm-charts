@@ -26,8 +26,7 @@ vrepaas:
        client_secret_key: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
 
     argo:
-      # FIXME
-      namespace: "argo"
+      namespace: "{{ .Values.global.namespace }}"
       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}"
       # FIXME
       token: "Bearer "
