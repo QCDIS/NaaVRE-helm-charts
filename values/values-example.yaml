@@ -4,11 +4,28 @@ global:
 
   secrets:
     k8sSecretCreator:
-      apiToken: <a random k8s-secret-creator API token>
+      apiToken: <a random token>
     keycloak:
-      naavreClientSecret: <a random OAuth client secret>
+      adminPassword: <a random password>
+      naavreClientSecret: <a random secret>
+      postgresql:
+        password: <a random password>
     vrepaas:
-      apiToken: <a random vrepaas API token>
+      vreapi:
+        secretKey: <a random secret>
+        auth:
+          superuser:
+            email: "admin@example.com"
+            username: admin
+            password: <a random password>
+          apiUser:
+            username: user
+            password: <a random password>
+            apiToken: <a random token>
+      vreapp:
+        secretKey: <a random secret>
+      postgresql:
+        password: <a random password>
 
   externalServices:
     notebookSearch:

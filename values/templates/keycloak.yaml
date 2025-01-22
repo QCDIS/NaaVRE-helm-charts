@@ -10,7 +10,7 @@ keycloak:
 
   auth:
     adminUser: "admin"
-    adminPassword: "{{ randAlphaNum 32 }}"
+    adminPassword: "{{ .Values.global.secrets.keycloak.adminPassword }}"
 
   extraEnvVars:
     - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
@@ -38,8 +38,7 @@ keycloak:
     nameOverride: postgresql-keycloak
     enabled: true
     auth:
-      postgresPassword: "{{ randAlphaNum 32 }}"
-      password: "{{ randAlphaNum 32 }}"
+      password: "{{ .Values.global.secrets.keycloak.postgresql.password }}"
     primary:
       {{- toYaml .Values.global.common.velero | nindent 6 }}
     readReplicas:

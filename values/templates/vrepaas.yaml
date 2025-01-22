@@ -17,7 +17,7 @@ vrepaas:
 
     postgresql:
       auth:
-        password: "{{ randAlphaNum 32 }}"
+        password: "{{ .Values.global.secrets.vrepaas.postgresql.password }}"
 
     keycloak:
        url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}"
@@ -42,16 +42,16 @@ vrepaas:
   vreapi:
     image:
       tag: "{{ .Values.vrepaas.vreapi.image.tag }}"
-    secret_key: "{{ randAlphaNum 32 }}"
+    secret_key: "{{ .Values.global.secrets.vrepaas.vreapi.secretKey }}"
     auth:
-      superuser_email: "admin@paas.local"
-      superuser_username: "admin"
-      superuser_password: "{{ randAlphaNum 32 }}"
-      username: "user"
-      password: "{{ randAlphaNum 32 }}"
-      token: "{{ .Values.global.secrets.vrepaas.apiToken }}"
+      superuser_email: "{{ .Values.global.secrets.vrepaas.vreapi.auth.superuser.email }}"
+      superuser_username: "{{ .Values.global.secrets.vrepaas.vreapi.auth.superuser.username }}"
+      superuser_password: "{{ .Values.global.secrets.vrepaas.vreapi.auth.superuser.password }}"
+      username: "{{ .Values.global.secrets.vrepaas.vreapi.auth.apiUser.username }}"
+      password: "{{ .Values.global.secrets.vrepaas.vreapi.auth.apiUser.password }}"
+      token: "{{ .Values.global.secrets.vrepaas.vreapi.auth.apiUser.apiToken }}"
 
   vreapp:
     image:
       tag: "{{ .Values.vrepaas.vreapp.image.tag }}"
-    secret_key: "{{ randAlphaNum 32 }}"
+    secret_key: "{{ .Values.global.secrets.vrepaas.vreapp.secretKey }}"

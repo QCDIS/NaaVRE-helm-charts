@@ -8,9 +8,26 @@ global:
     k8sSecretCreator:
       apiToken:
     keycloak:
+      adminPassword:
       naavreClientSecret:
+      postgresql:
+        password:
     vrepaas:
-      apiToken:
+      vreapi:
+        secretKey:
+        auth:
+          superuser:
+            email: "admin@example.org"
+            username: admin
+            password:
+          apiUser:
+            username: user
+            password:
+            apiToken:
+      vreapp:
+        secretKey:
+      postgresql:
+        password:
 
   common:
     velero:
