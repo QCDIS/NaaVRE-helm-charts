@@ -28,8 +28,9 @@ vrepaas:
     argo:
       namespace: "{{ .Values.global.namespace }}"
       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}"
-      # FIXME
-      token: "Bearer "
+      serviceAccountTokenSecretKeyRef:
+        name: argo-vreapi.service-account-token
+        key: token
 
     k8s_secret_creator:
       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.k8sSecretCreator.ingress.basePath }}/1.0.0/"

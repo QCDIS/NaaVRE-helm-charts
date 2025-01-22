@@ -47,8 +47,6 @@ argoWorkflows:
   enabled: true
   ingress:
     basePath: /argowf
-  # TODO:
-  #   - Propagate SA token
 
 jupyterhub:
   enabled: true
