@@ -35,6 +35,7 @@ keycloak:
     tls: true
 
   postgresql:
+    nameOverride: postgresql-keycloak
     enabled: true
     auth:
       postgresPassword: "{{ randAlphaNum 32 }}"
