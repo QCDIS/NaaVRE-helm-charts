@@ -10,9 +10,9 @@ dependencies:
   version: 0.1.0
 - name: keycloak
   repository: https://charts.bitnami.com/bitnami
-  version: 15.1.6
+  version: 16.1.7
 - name: vrepaas
   repository: oci://ghcr.io/qcdis/charts
   version: 0.5.7
-digest: sha256:698b9df9241049d248b00c572012ee9b87f5ad0eee6375a44a48bc158e185513
-generated: "2024-10-08T14:46:40.504025501+02:00"
+digest: sha256:3964d3b03ece01cee17059637dd50a11a25d912ce65fa18426875c42483a55a9
+generated: "2025-01-21T17:17:34.444174924+01:00"
