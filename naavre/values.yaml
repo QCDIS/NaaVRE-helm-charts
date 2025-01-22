@@ -12,3 +12,8 @@ keycloak:
 
 vrepaas:
   enabled: true
+
+global:
+  secrets:
+    keycloak:
+      naavreClientSecret:

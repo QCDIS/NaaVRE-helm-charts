@@ -62,10 +62,10 @@ argo-workflows:
       sessionExpiry: 240h
       clientId:
         name: argo-sso
-        key: client-id  # FIXME
+        key: client-id
       clientSecret:
         name: argo-sso
-        key: client-secret  # FIXME
+        key: client-secret
       redirectUrl: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}/oauth2/callback"
       rbac:
         enabled: false

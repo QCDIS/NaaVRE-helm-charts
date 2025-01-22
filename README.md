@@ -25,6 +25,7 @@ Files in `values/rendered/` should never be edited directly. Instead, change `va
 
 - Assumes that all components are served from one domain
 - Assumes that everything runs within a single k8s namespace
+- Assumes it is the only NaaVRE instance running in said namespace
 - Assumes that the [Ingress NGINX Controller](https://kubernetes.github.io/ingress-nginx/) is deployed on the cluster
 - Deploys a single JupyterHub instance
 - Does not deploy monitoring (see https://github.com/QCDIS/infrastructure/blob/main/doc/monitoring.md)

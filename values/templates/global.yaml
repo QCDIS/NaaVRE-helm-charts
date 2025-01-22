@@ -1,0 +1,4 @@
+global:
+  secrets:
+    keycloak:
+      naavreClientSecret: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"

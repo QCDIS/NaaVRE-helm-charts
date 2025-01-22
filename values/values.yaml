@@ -47,10 +47,6 @@ argoWorkflows:
   ingress:
     basePath: /argowf
   # TODO:
-  #   - Create secret `argo-sso` containing
-  #     data:
-  #       client-id: naavre
-  #       client-secret: {{ .Values.global.secrets.keycloak.naavreClientSecret | default "" | b64enc }}
   #   - Create executor role
   #   - Propagate SA token
 
