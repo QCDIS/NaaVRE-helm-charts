@@ -54,6 +54,17 @@ keycloak:
         groups:
           - name: users
             path: /users
+        users:
+          {{- range .Values.global.secrets.keycloak.users }}
+          - username: "{{ .username }}"
+            enabled: true
+            credentials:
+              - type: password
+                value: "{{ .password }}"
+                temporary: false
+            groups:
+              - users
+          {{- end }}
         clientScopes:
           - id: openid
             name: openid

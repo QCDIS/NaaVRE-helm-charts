@@ -10,6 +10,7 @@ global:
     keycloak:
       adminPassword:
       naavreClientSecret:
+      users: []
       postgresql:
         password:
     vrepaas:
