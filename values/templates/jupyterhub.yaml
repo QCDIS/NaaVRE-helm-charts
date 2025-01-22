@@ -74,7 +74,7 @@ jupyterhub:
       JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
       MODULE_MAPPING_URL: "{{ .Values.jupyterhub.singleuser.extraEnv.MODULE_MAPPING_URL }}"
       API_ENDPOINT: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.vrepaas.vreapi.ingress.basePath }}"
-      NAAVRE_API_TOKEN: "{{ .Values.global.secrets.vrepaas.apiToken }}"
+      NAAVRE_API_TOKEN: "{{ .Values.global.secrets.vrepaas.vreapi.auth.apiUser.apiToken }}"
       SEARCH_API_ENDPOINT: "{{ .Values.global.externalServices.notebookSearch.apiEndpoint }}"
       SEARCH_API_TOKEN: "{{ .Values.global.externalServices.notebookSearch.apiToken }}"
       VLAB_SLUG: "{{ .Values.jupyterhub.vlabSlug }}"
