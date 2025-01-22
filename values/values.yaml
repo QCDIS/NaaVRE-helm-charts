@@ -48,7 +48,6 @@ argoWorkflows:
   ingress:
     basePath: /argowf
   # TODO:
-  #   - Create executor role
   #   - Propagate SA token
 
 jupyterhub:

@@ -81,4 +81,4 @@ jupyterhub:
       CELL_GITHUB: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.url }}"
       CELL_GITHUB_TOKEN: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.token }}"
       PROJ_LIB: /venv/share/proj
-      ARGO_WF_SPEC_SERVICEACCOUNT: executor  # FIXME
+      ARGO_WF_SPEC_SERVICEACCOUNT: argo-executor
