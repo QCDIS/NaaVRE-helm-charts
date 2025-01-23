@@ -29,14 +29,9 @@ jupyterhub:
         authenticator_class: generic-oauth
   ingress:
     enabled: true
+    ingressClassName: "nginx"
     hosts:
       - "{{ .Values.global.ingress.domain }}"
-    annotations:
-      kubernetes.io/ingress.class: "nginx"
-      nginx.ingress.kubernetes.io/add-base-url: "true"
-      kubernetes.io/tls-acme: "true"
-      nginx.ingress.kubernetes.io/proxy-body-size: "600m"
-      nginx.org/client-max-body-size: "600m"
   proxy:
     service:
       type: ClusterIP

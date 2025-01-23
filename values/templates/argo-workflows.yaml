@@ -74,17 +74,9 @@ argo-workflows:
       enabled: true
       ingressClassName: "nginx"
       annotations:
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/rewrite-target: /$2
-        nginx.ingress.kubernetes.io/add-base-url: "true"
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-          proxy_set_header Accept-Encoding "";
-          sub_filter '<base href="/">' '<base href="/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}/">';
-          sub_filter_once on;
-          more_set_headers "X-Accel-Buffering: no";
       hosts:
         - {{ .Values.global.ingress.domain }}
       paths:
         - /{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}(/|$)(.*)
-      tls: []
+      pathType: ImplementationSpecific
