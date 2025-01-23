@@ -52,7 +52,10 @@ jupyterhub:
   enabled: true
   ingress:
     basePath: /vl-openlab
-  vlabSlug: openlab
+  vlab:
+    slug: openlab
+    title: "NaaVRE Open Lab"
+    description: "Open experimentation with virtual labs"
   singleuser:
     image:
       name: qcdis/n-a-a-vre

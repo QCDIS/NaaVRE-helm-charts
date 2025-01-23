@@ -1,7 +1,7 @@
 jupyterhub:
   enabled: {{ .Values.jupyterhub.enabled }}
 
-  fullnameOverride: "vl-{{ .Values.jupyterhub.vlabSlug }}"
+  fullnameOverride: "vl-{{ .Values.jupyterhub.vlab.slug }}"
 
   hub:
     concurrentSpawnLimit: 10
@@ -54,7 +54,7 @@ jupyterhub:
     storage:
       capacity: 10Gi
       dynamic:
-        pvcNameTemplate: "vl-{{ .Values.jupyterhub.vlabSlug }}-claim-{username}{servername}"
+        pvcNameTemplate: "vl-{{ .Values.jupyterhub.vlab.slug }}-claim-{username}{servername}"
     cpu:
       limit: 1.25
       guarantee: 1.1
@@ -67,7 +67,7 @@ jupyterhub:
       tag: "{{ .Values.jupyterhub.singleuser.image.tag }}"
       pullPolicy: IfNotPresent
     defaultUrl: "/lab"
-    podNameTemplate: "vl-{{ .Values.jupyterhub.vlabSlug }}-jupyter-{username}"
+    podNameTemplate: "vl-{{ .Values.jupyterhub.vlab.slug }}-jupyter-{username}"
     extraEnv:
       JUPYTER_ALLOW_INSECURE_WRITES: "1" # This is needed because the default mount for csi is --file-mode 0666. If we set it to 0600 we get error in the postStart hook
       BASE_IMAGE_TAGS_URL: "{{ .Values.jupyterhub.singleuser.extraEnv.BASE_IMAGE_TAGS_URL }}"
@@ -77,7 +77,9 @@ jupyterhub:
       NAAVRE_API_TOKEN: "{{ .Values.global.secrets.vrepaas.vreapi.auth.apiUser.apiToken }}"
       SEARCH_API_ENDPOINT: "{{ .Values.global.externalServices.notebookSearch.apiEndpoint }}"
       SEARCH_API_TOKEN: "{{ .Values.global.externalServices.notebookSearch.apiToken }}"
-      VLAB_SLUG: "{{ .Values.jupyterhub.vlabSlug }}"
+      VLAB_SLUG: "{{ .Values.jupyterhub.vlab.slug }}"
+      VLAB_TITLE: "{{ .Values.jupyterhub.vlab.title }}"
+      VLAB_DESCRIPTION: "{{ .Values.jupyterhub.vlab.description }}"
       CELL_GITHUB: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.url }}"
       CELL_GITHUB_TOKEN: "{{ .Values.global.externalServices.GitHubRepoNaaVRECells.token }}"
       PROJ_LIB: /venv/share/proj

@@ -44,4 +44,7 @@ global:
 jupyterhub:
   ingress:
     basePath: /vl-openlab
-  vlabSlug: openlab
+  vlab:
+    slug: openlab
+    title: "NaaVRE Open Lab"
+    description: "Open experimentation with virtual labs"

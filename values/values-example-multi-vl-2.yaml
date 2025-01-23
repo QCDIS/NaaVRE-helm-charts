@@ -2,4 +2,7 @@ jupyterhub:
   enabled: true
   ingress:
     basePath: /vl-2
-  vlabSlug: 2
+  vlab:
+    slug: 2
+    title: "Virtual Lab 2"
+    description: "Another sample virtual lab"
