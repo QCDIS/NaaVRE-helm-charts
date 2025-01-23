@@ -8,7 +8,7 @@ This is not directly supported by Helm, so deployment is done in two steps:
 - **Step 1:** render values for the sub-charts, using the `values` chart
   - copy the example root values
     ```shell
-    cp ./values/values-example.yaml ./root-values/values-my-deployment.yaml
+    cp ./values/values-example-single.yaml ./root-values/values-my-deployment.yaml
     ```
   - fill in your values
     ```shell
