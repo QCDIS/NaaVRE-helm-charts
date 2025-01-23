@@ -1,0 +1,5 @@
+jupyterhub:
+  enabled: true
+  ingress:
+    basePath: /vl-1
+  vlabSlug: 1
