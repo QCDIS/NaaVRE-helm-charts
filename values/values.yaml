@@ -51,7 +51,7 @@ argoWorkflows:
 jupyterhub:
   enabled: true
   ingress:
-    basePAth: /vl-openlab
+    basePath: /vl-openlab
   vlabSlug: openlab
   singleuser:
     image:

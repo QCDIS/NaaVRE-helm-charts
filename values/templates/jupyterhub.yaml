@@ -1,13 +1,15 @@
 jupyterhub:
   enabled: {{ .Values.jupyterhub.enabled }}
 
+  fullnameOverride: "vl-{{ .Values.jupyterhub.vlabSlug }}"
+
   hub:
     concurrentSpawnLimit: 10
     consecutiveFailureLimit: 16
     activeServerLimit: 16
     namedServerLimitPerUser: 1
     shutdownOnLogout: true
-    baseUrl: "/{{ trimAll "/" .Values.jupyterhub.ingress.basePAth }}"
+    baseUrl: "/{{ trimAll "/" .Values.jupyterhub.ingress.basePath }}"
     config:
       GenericOAuthenticator:
         login_service: keycloak
@@ -19,7 +21,7 @@ jupyterhub:
           - users
         admin_groups:
           - admins
-        oauth_callback_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.jupyterhub.ingress.basePAth }}/hub/oauth_callback"
+        oauth_callback_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.jupyterhub.ingress.basePath }}/hub/oauth_callback"
         client_id: naavre
         client_secret: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
         authorize_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/auth"
@@ -51,6 +53,8 @@ jupyterhub:
       guarantee: 1G
     storage:
       capacity: 10Gi
+      dynamic:
+        pvcNameTemplate: "vl-{{ .Values.jupyterhub.vlabSlug }}-claim-{username}{servername}"
     cpu:
       limit: 1.25
       guarantee: 1.1
@@ -63,6 +67,7 @@ jupyterhub:
       tag: "{{ .Values.jupyterhub.singleuser.image.tag }}"
       pullPolicy: IfNotPresent
     defaultUrl: "/lab"
+    podNameTemplate: "vl-{{ .Values.jupyterhub.vlabSlug }}-jupyter-{username}"
     extraEnv:
       JUPYTER_ALLOW_INSECURE_WRITES: "1" # This is needed because the default mount for csi is --file-mode 0666. If we set it to 0600 we get error in the postStart hook
       BASE_IMAGE_TAGS_URL: "{{ .Values.jupyterhub.singleuser.extraEnv.BASE_IMAGE_TAGS_URL }}"
