@@ -1,4 +1,6 @@
 global:
+  namespace: naavre
+
   ingress:
     domain: example.com
 
@@ -38,3 +40,8 @@ global:
     GitHubRepoNaaVRECells:
       url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
       token: "<Token generated following the instructions from the template>"
+
+jupyterhub:
+  ingress:
+    basePath: /vl-openlab
+  vlabSlug: openlab
