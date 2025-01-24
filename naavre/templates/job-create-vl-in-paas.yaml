@@ -16,6 +16,8 @@ spec:
           args:
             - |
               POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=vreapi -o jsonpath='{.items[0].metadata.name}');
+              echo "Waiting for pod $POD_NAME"
+              kubectl wait --for=condition=ready pod $POD_NAME --timeout=300s || exit 1
               kubectl exec $POD_NAME -- /opt/venv/bin/python manage.py shell -c "from virtual_labs.models import VirtualLab; VirtualLab.objects.filter(slug='{{ .Values.jupyterhub.singleuser.extraEnv.VLAB_SLUG | default .Values.jupyterhub.fullnameOverride }}').exists() or VirtualLab.objects.create(title='{{ .Values.jupyterhub.singleuser.extraEnv.VLAB_TITLE | default .Values.jupyterhub.fullnameOverride }}', slug='{{ .Values.jupyterhub.singleuser.extraEnv.VLAB_SLUG | default .Values.jupyterhub.fullnameOverride }}', description='{{ .Values.jupyterhub.singleuser.extraEnv.VLAB_DESCRIPTION | default .Values.jupyterhub.fullnameOverride }}', base_url='{{ .Values.jupyterhub.hub.baseUrl }}', fqdn='{{ index .Values.jupyterhub.ingress.hosts 0 }}', ingress_ssl_port='443' , image_name='{{ .Values.jupyterhub.singleuser.image.name }}', image_tag='{{ .Values.jupyterhub.singleuser.image.tag }}')"
       restartPolicy: Never
   backoffLimit: 0
@@ -34,19 +36,12 @@ metadata:
   labels:
     {{- include "naavre.labels" . | nindent 4 }}
 rules:
-  - verbs:
-      - list
-      - get
-    apiGroups:
-      - ''
-    resources:
-      - pods
-  - verbs:
-      - create
-    apiGroups:
-      - ''
-    resources:
-      - pods/exec
+  - apiGroups: ['']
+    resources: ['pods']
+    verbs: ['list', 'get', 'watch']
+  - apiGroups: ['']
+    resources: ['pods/exec']
+    verbs: ['create']
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
