@@ -26,11 +26,17 @@ vrepaas:
        client_secret_key: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
 
     argo:
+      {{- if .Values.global.externalServices.argoWorkflows.useExternal }}
+      namespace: "{{ .Values.global.externalServices.argoWorkflows.namespace }}"
+      url: "{{ .Values.global.externalServices.argoWorkflows.url }}"
+      token: "{{ .Values.global.externalServices.argoWorkflows.token }}"
+      {{- else}}
       namespace: "{{ .Values.global.namespace }}"
       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}"
       serviceAccountTokenSecretKeyRef:
         name: argo-vreapi.service-account-token
         key: token
+      {{- end}}
 
     k8s_secret_creator:
       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.k8sSecretCreator.ingress.basePath }}/1.0.0/"

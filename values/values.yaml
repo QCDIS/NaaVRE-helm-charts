@@ -42,6 +42,11 @@ global:
     GitHubRepoNaaVRECells:
       url:
       token:
+    argoWorkflows:
+      useExternal: false
+      namespace: nil
+      url: nil
+      token: nil
 
 argoWorkflows:
   enabled: true
