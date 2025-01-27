@@ -59,7 +59,7 @@ jupyterhub:
   singleuser:
     image:
       name: qcdis/n-a-a-vre
-      tag: v2.5.0
+      tag: v2.6.0
     extraEnv:
       BASE_IMAGE_TAGS_URL: "https://github.com/QCDIS/NaaVRE-flavors/releases/download/v0.20.2/base_image_tags.json"
       MODULE_MAPPING_URL: https://raw.githubusercontent.com/QCDIS/NaaVRE-conf/main/module_mapping.json
