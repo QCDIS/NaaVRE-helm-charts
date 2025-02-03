@@ -32,8 +32,18 @@ jupyterhub:
   ingress:
     enabled: true
     ingressClassName: "nginx"
+    {{- with .Values.global.ingress.commonAnnotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     hosts:
       - "{{ .Values.global.ingress.domain }}"
+    {{- if .Values.global.ingress.tls.enabled }}
+    tls:
+      - hosts:
+          - "{{ .Values.global.ingress.domain }}"
+        secretName: "{{ .Values.global.ingress.domain }}-tls"
+    {{- end }}
   proxy:
     service:
       type: ClusterIP

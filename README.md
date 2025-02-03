@@ -63,6 +63,26 @@ helm template values/ --output-dir values/rendered -f ./root-values/values-examp
 helm -n naavre upgrade --create-namespace --install naavre-vl-2 naavre/ $(find values/rendered/values/templates -type f | xargs -I{} echo -n " -f {}")
 ```
 
+### TLS certificates with cert-manager
+
+This shows how to automatically provision TLS certificates with [cert-manager](https://cert-manager.io/).
+
+1. Create an `Issuer` in the target namespace, or create a `ClusterIssuer` ([doc](https://cert-manager.io/docs/concepts/issuer/), [tutorial](https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-6---configure-a-lets-encrypt-issuer)). We'll assume that the issuer is named `letsencrypt-prod`.
+
+2. Add the following to the root values file:
+
+```yaml
+global:
+  ingress:
+    commonAnnotations:
+      # if using a namespaced Issuer
+      cert-manager.io/issuer: "letsencrypt-prod"
+      # if using a ClusterIssuer
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    tls:
+      enabled: true
+```
+
 ## Limitations
 
 - Assumes that all components are served from one domain

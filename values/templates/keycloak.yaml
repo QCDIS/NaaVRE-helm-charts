@@ -21,13 +21,16 @@ keycloak:
       value: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/"
 
   ingress:
+    {{- with .Values.global.ingress.commonAnnotations }}
     annotations:
       nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     enabled: true
     ingressClassName: "nginx"
     path: "/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/"
     hostname: "{{ .Values.global.ingress.domain }}"
-    tls: true
+    tls: {{ .Values.global.ingress.tls.enabled }}
 
   postgresql:
     nameOverride: postgresql-keycloak

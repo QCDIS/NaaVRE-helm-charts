@@ -3,6 +3,9 @@ global:
 
   ingress:
     domain: example.org
+    commonAnnotations: {}
+    tls:
+      enabled: false
 
   secrets:
     k8sSecretCreator:

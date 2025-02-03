@@ -13,7 +13,17 @@ vrepaas:
         vreapp: "/{{ trimAll "/" .Values.vrepaas.vreapp.ingress.basePath }}"
 
     ingress:
+      {{- with .Values.global.ingress.commonAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       host: "{{ .Values.global.ingress.domain }}"
+      {{- if .Values.global.ingress.tls.enabled }}
+      tls:
+        - hosts:
+            - "{{ .Values.global.ingress.domain }}"
+          secretName: "{{ .Values.global.ingress.domain }}-tls"
+      {{- end }}
 
     postgresql:
       auth:

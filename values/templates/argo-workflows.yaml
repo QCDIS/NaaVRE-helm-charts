@@ -73,10 +73,19 @@ argo-workflows:
     ingress:
       enabled: true
       ingressClassName: "nginx"
+      {{- with .Values.global.ingress.commonAnnotations }}
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /$2
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       hosts:
         - {{ .Values.global.ingress.domain }}
       paths:
         - /{{ trimAll "/" .Values.argoWorkflows.ingress.basePath }}(/|$)(.*)
       pathType: ImplementationSpecific
+      {{- if .Values.global.ingress.tls.enabled }}
+      tls:
+        - hosts:
+            - "{{ .Values.global.ingress.domain }}"
+          secretName: "{{ .Values.global.ingress.domain }}-tls"
+      {{- end }}
