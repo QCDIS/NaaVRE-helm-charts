@@ -4,7 +4,7 @@ dependencies:
   version: 0.33.1
 - name: jupyterhub
   repository: https://jupyterhub.github.io/helm-chart/
-  version: 3.3.7
+  version: 4.1.0
 - name: k8s-secret-creator
   repository: oci://ghcr.io/qcdis/charts
   version: 0.1.0
@@ -14,5 +14,5 @@ dependencies:
 - name: vrepaas
   repository: oci://ghcr.io/qcdis/charts
   version: 0.5.8
-digest: sha256:89911287d84ec13d8cb9c981c0e661febe518fd13d0ab17bea59f37c7cebd526
-generated: "2025-01-22T19:41:21.912564443+01:00"
+digest: sha256:f0dd51c237e3579eee0f3c178e7370bf02ad04a4ce24663b7e66fb803a87ce01
+generated: "2025-02-07T14:37:39.650594212+01:00"

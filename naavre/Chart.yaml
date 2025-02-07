@@ -29,7 +29,7 @@ dependencies:
     repository: https://argoproj.github.io/argo-helm
     condition: argo-workflows.enabled
   - name: "jupyterhub"
-    version: "3.3.7"
+    version: "4.1.0"
     repository: "https://jupyterhub.github.io/helm-chart/"
     condition: jupyterhub.enabled
   - name: "k8s-secret-creator"

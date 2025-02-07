@@ -17,6 +17,7 @@ jupyterhub:
         userdata_params:
           state: state
         claim_groups_key: groups
+        manage_groups: True
         allowed_groups:
           - users
         admin_groups:
