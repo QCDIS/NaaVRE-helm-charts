@@ -39,6 +39,32 @@ helm -n naavre uninstall naavre
 
 ## Advanced setups
 
+### Run a command before starting Jupyter Lab
+
+This shows how to run a command before starting a user's Jupyter Lab instance in the singleuser pod. This is useful to, e.g., add cells to the local cell catalogue (`~/NaaVRE/NaaVRE_db.json`). Unlike kubernetes' `postStart` lifecycle hook which is asynchronous, this method makes it possible to run commands before calling the container's entrypoint.
+
+```yaml
+jupyterhub:
+  vlabs:
+    - slug: example-lab
+      title: "Example"
+      description: "Example"
+      image:
+        name: qcdis/n-a-a-vre
+        tag: v2.6.0
+      GitHubRepoNaaVRECells:
+        url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
+        token: "<Token generated following the instructions from the template>"
+      cmd:
+        - "sh"
+        - "-c"
+        - |
+          /tmp/init_script.sh
+          echo "this runs before starting Jupyter Lab"
+          # ... modify 
+          /usr/local/bin/start-jupyter-venv.sh
+```
+
 ### TLS certificates with cert-manager
 
 This shows how to automatically provision TLS certificates with [cert-manager](https://cert-manager.io/).
