@@ -1,8 +1,0 @@
-argoWorkflows:
-  enabled: true
-k8sSecretCreator:
-  enabled: true
-keycloak:
-  enabled: true
-vrepaas:
-  enabled: true

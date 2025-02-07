@@ -40,14 +40,24 @@ global:
     notebookSearch:
       apiEndpoint: "<Notebook search API endpoint URL>"
       apiToken: <API token>
-    GitHubRepoNaaVRECells:
-      url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
-      token: "<Token generated following the instructions from the template>"
 
 jupyterhub:
-  ingress:
-    basePath: /vl-openlab
-  vlab:
-    slug: openlab
-    title: "NaaVRE Open Lab"
-    description: "Open experimentation with virtual labs"
+  vlabs:
+    - slug: openlab
+      title: "NaaVRE Open Lab"
+      description: "Open experimentation with virtual labs"
+      image:
+        name: qcdis/n-a-a-vre
+        tag: v2.6.0
+      GitHubRepoNaaVRECells:
+        url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
+        token: "<Token generated following the instructions from the template>"
+    - slug: other-lab
+      title: "Another lab"
+      description: "Another virtual lab to demonstrate that we support several"
+      image:
+        name: qcdis/n-a-a-vre
+        tag: v2.6.0
+      GitHubRepoNaaVRECells:
+        url: "<Repo created from template https://github.com/QCDIS/NaaVRE-cells>"
+        token: "<Token generated following the instructions from the template>"

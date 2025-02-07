@@ -42,9 +42,6 @@ global:
     notebookSearch:
       apiEndpoint:
       apiToken:
-    GitHubRepoNaaVRECells:
-      url:
-      token:
     argoWorkflows:
       useExternal: false
       namespace: nil
@@ -59,18 +56,21 @@ argoWorkflows:
 jupyterhub:
   enabled: true
   ingress:
-    basePath: /vl-openlab
-  vlab:
-    slug: openlab
-    title: "NaaVRE Open Lab"
-    description: "Open experimentation with virtual labs"
+    basePath: /jupyter
   singleuser:
-    image:
-      name: qcdis/n-a-a-vre
-      tag: v2.6.0
     extraEnv:
       BASE_IMAGE_TAGS_URL: "https://github.com/QCDIS/NaaVRE-flavors/releases/download/v0.20.2/base_image_tags.json"
       MODULE_MAPPING_URL: https://raw.githubusercontent.com/QCDIS/NaaVRE-conf/main/module_mapping.json
+  vlabs:
+    - slug: openlab
+      title: "NaaVRE Open Lab"
+      description: "Open experimentation with virtual labs"
+      image:
+        name: qcdis/n-a-a-vre
+        tag: v2.6.0
+      GitHubRepoNaaVRECells:
+        url:
+        token:
 
 k8sSecretCreator:
   enabled: true

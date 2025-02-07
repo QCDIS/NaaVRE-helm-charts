@@ -1,5 +1,5 @@
 {{- /* Check that all values are filled. */}}
-{{- /* This ensures that all values left empty in values.yaml are provided. See values-example-single.yaml */}}
+{{- /* This ensures that all values left empty in values.yaml are provided. See values-example-basic.yaml */}}
 {{- define "checkRequiredValues" -}}
 {{- range $key, $value := $.map -}}
 {{- $fullPath := printf "%s.%s" $.path $key }}
