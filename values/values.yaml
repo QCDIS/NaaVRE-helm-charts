@@ -47,6 +47,12 @@ global:
       namespace: nil
       url: nil
       token: nil
+    keycloak:
+      useExternal: false
+      url: nil
+      realm: nil
+      client_id: nil
+      client_secret: nil
 
 argoWorkflows:
   enabled: true

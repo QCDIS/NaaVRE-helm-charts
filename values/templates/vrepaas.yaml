@@ -30,10 +30,17 @@ vrepaas:
         password: "{{ .Values.global.secrets.vrepaas.postgresql.password }}"
 
     keycloak:
-       url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}"
-       realm: "vre"
-       client_id: "naavre"
-       client_secret_key: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
+      {{- if .Values.global.externalServices.keycloak.useExternal }}
+      url: "{{ trimSuffix "/" .Values.global.externalServices.keycloak.url }}"
+      realm: "{{ .Values.global.externalServices.keycloak.realm }}"
+      client_id: "{{ .Values.global.externalServices.keycloak.client_id }}"
+      client_secret_key: "{{ .Values.global.externalServices.keycloak.client_secret }}"
+      {{- else}}
+      url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}"
+      realm: "vre"
+      client_id: "naavre"
+      client_secret_key: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
+      {{- end}}
 
     argo:
       {{- if .Values.global.externalServices.argoWorkflows.useExternal }}

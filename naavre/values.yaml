@@ -16,4 +16,5 @@ vrepaas:
 global:
   secrets:
     keycloak:
-      naavreClientSecret:
+      client_id:
+      client_secret:

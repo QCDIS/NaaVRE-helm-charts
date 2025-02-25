@@ -23,11 +23,19 @@ jupyterhub:
         admin_groups:
           - admins
         oauth_callback_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.jupyterhub.ingress.basePath }}/hub/oauth_callback"
+        {{- if .Values.global.externalServices.keycloak.useExternal }}
+        client_id: "{{ .Values.global.externalServices.keycloak.client_id }}"
+        client_secret: "{{ .Values.global.externalServices.keycloak.client_secret }}"
+        authorize_url: "{{ trimSuffix "/" .Values.global.externalServices.keycloak.url }}/realms/{{ .Values.global.externalServices.keycloak.realm }}/protocol/openid-connect/auth"
+        token_url: "{{ trimSuffix "/" .Values.global.externalServices.keycloak.url }}/realms/{{ .Values.global.externalServices.keycloak.realm }}/protocol/openid-connect/token"
+        userdata_url: "{{ trimSuffix "/" .Values.global.externalServices.keycloak.url }}/realms/{{ .Values.global.externalServices.keycloak.realm }}/protocol/openid-connect/userinfo"
+        {{- else }}
         client_id: naavre
         client_secret: "{{ .Values.global.secrets.keycloak.naavreClientSecret }}"
         authorize_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/auth"
         token_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/token"
         userdata_url: "https://{{ .Values.global.ingress.domain }}/{{ trimAll "/" .Values.keycloak.ingress.basePath }}/realms/vre/protocol/openid-connect/userinfo"
+        {{- end }}
       JupyterHub:
         authenticator_class: generic-oauth
     extraConfig:
