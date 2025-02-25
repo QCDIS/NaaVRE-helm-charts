@@ -32,9 +32,9 @@ argo-workflows:
         activeDeadlineSeconds: 172800
         # keep completed workflows for min failed for 5min
         ttlStrategy:
-          secondsAfterCompletion: 300
-          secondsAfterFailure: 300
-          secondsAfterSuccess: 300
+          secondsAfterCompletion: {{ .Values.argoWorkflows.workflowTTL }}
+          secondsAfterFailure: {{ .Values.argoWorkflows.workflowTTL }}
+          secondsAfterSuccess: {{ .Values.argoWorkflows.workflowTTL }}
           # podGC:
           #   strategy: OnWorkflowCompletion
         affinity:
