@@ -11,14 +11,10 @@ global:
     k8sSecretCreator:
       apiToken: <a random token>
     keycloak:
-      adminPassword: <a random password>
-      naavreClientSecret: <a random secret>
-      # Adding users is optional. To not create any, remove the `users` entry.
-      users:
-        - username: my-user
-          password: <a random password>
+      adminPassword: nil
+      naavreClientSecret: nil
       postgresql:
-        password: <a random password>
+        password: nil
     vrepaas:
       vreapi:
         secretKey: <a random secret>
