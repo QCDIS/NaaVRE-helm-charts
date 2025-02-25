@@ -56,6 +56,8 @@ global:
 
 argoWorkflows:
   enabled: true
+  crds:
+    install: true
   ingress:
     basePath: /argowf
 

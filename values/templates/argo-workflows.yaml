@@ -1,6 +1,9 @@
 argo-workflows:
   enabled: {{ .Values.argoWorkflows.enabled }}
 
+  crds:
+    install: {{ .Values.argoWorkflows.crds.install }}
+
   singleNamespace: true
   executor:
     resources:
