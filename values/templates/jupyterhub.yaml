@@ -39,7 +39,10 @@ jupyterhub:
       JupyterHub:
         authenticator_class: generic-oauth
     extraConfig:
-      customkubespawner: |
+      {{- with .Values.jupyterhub.hub.extraConfig }}
+      {{- toYaml . | nindent 6}}
+      {{- end}}
+      custom_kubespawner.py: |
         # Workaround for jupyterhub/kubespawner#877
         # Source: https://discourse.jupyter.org/t/creating-1-pvc-per-profile-and-per-user/31755/5
         from kubespawner import KubeSpawner
