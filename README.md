@@ -85,6 +85,27 @@ global:
       enabled: true
 ```
 
+### Export Prometheus metrics
+
+To export prometheus metrics, add the following to the root values file (generate a random token):
+
+```yaml
+jupyterhub:
+  hub:
+    extraConfig:
+      prometheus.py: |
+        c.JupyterHub.services += [{
+          'name': 'service-prometheus',
+          'api_token': '<a random token>',
+          }]
+        c.JupyterHub.load_roles += [{
+          'name': 'service-metrics-role',
+          'description': 'access metrics',
+          'scopes': [ 'read:metrics'],
+          'services': ['service-prometheus'],
+          }]
+```
+
 ## Limitations
 
 - Assumes that all components are served from one domain
