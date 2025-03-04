@@ -38,6 +38,18 @@ jupyterhub:
         {{- end }}
       JupyterHub:
         authenticator_class: generic-oauth
+    initContainers:
+      {{- with .Values.jupyterhub.hub.initContainers }}
+      {{- toYaml . | nindent 6}}
+      {{- end}}
+    extraVolumes:
+      {{- with .Values.jupyterhub.hub.extraVolumes }}
+      {{- toYaml . | nindent 6}}
+      {{- end}}
+    extraVolumeMounts:
+      {{- with .Values.jupyterhub.hub.extraVolumeMounts }}
+      {{- toYaml . | nindent 6}}
+      {{- end}}
     extraConfig:
       {{- with .Values.jupyterhub.hub.extraConfig }}
       {{- toYaml . | nindent 6}}
