@@ -106,6 +106,54 @@ jupyterhub:
           }]
 ```
 
+### Customize the Jupyter Hub templates
+
+To customize the Jupyter Hub templates ([doc](https://jupyterhub.readthedocs.io/en/stable/howto/templates.html)), add the following to the root values:
+
+```yaml
+jupyterhub:
+  hub:
+    initContainers:
+      - name: git-clone-templates
+        image: alpine/git
+        args:
+          - clone
+          - --single-branch
+          - --branch=lifeWatch-jh-4
+          - --depth=1
+          - --
+          - https://github.com/QCDIS/k8s-jhub.git
+          - /etc/jupyterhub/custom
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+          - name: hub-templates
+            mountPath: /etc/jupyterhub/custom
+      - name: copy-static
+        image: busybox:1.28
+        command: ["sh", "-c", "mv /etc/jupyterhub/custom/static/* /usr/local/share/jupyterhub/static/external"]
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+          - name: hub-templates
+            mountPath: /etc/jupyterhub/custom
+          - name: hub-static
+            mountPath: /usr/local/share/jupyterhub/static/external
+    extraVolumes:
+      - name: hub-templates
+        emptyDir: { }
+      - name: hub-static
+        emptyDir: { }
+    extraVolumeMounts:
+      - name: hub-templates
+        mountPath: /etc/jupyterhub/custom
+      - name: hub-static
+        mountPath: /usr/local/share/jupyterhub/static/external
+    extraConfig:
+      templates.py: |
+        c.JupyterHub.template_paths = ['/etc/jupyterhub/custom/templates']
+```
+
 ## Limitations
 
 - Assumes that all components are served from one domain
