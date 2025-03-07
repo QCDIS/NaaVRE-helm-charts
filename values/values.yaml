@@ -72,9 +72,9 @@ jupyterhub:
       MODULE_MAPPING_URL: https://raw.githubusercontent.com/QCDIS/NaaVRE-conf/main/module_mapping.json
   hub:
     extraConfig: {}
-    initContainers: {}
-    extraVolumes: {}
-    extraVolumeMounts: {}
+    initContainers: []
+    extraVolumes: []
+    extraVolumeMounts: []
   vlabs:
     - slug: openlab
       title: "NaaVRE Open Lab"
