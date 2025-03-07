@@ -119,10 +119,10 @@ jupyterhub:
       SEARCH_API_ENDPOINT: "{{ .Values.global.externalServices.notebookSearch.apiEndpoint }}"
       SEARCH_API_TOKEN: "{{ .Values.global.externalServices.notebookSearch.apiToken }}"
 
+    {{- with .Values.jupyterhub.singleuser.lifecycleHooks }}
     lifecycleHooks:
-      postStart:
-        exec:
-          command: ["sh", "-c", "/tmp/init_script.sh"]
+      {{- toYaml . | nindent 6}}
+    {{- end}}
 
     profileList:
       {{- range .Values.jupyterhub.vlabs }}
@@ -141,7 +141,5 @@ jupyterhub:
           {{- if .cmd | default "" }}
           cmd:
             {{- toYaml .cmd | nindent 12 }}
-          lifecycle_hooks:
-            postStart: {}
           {{- end }}
       {{- end }}
