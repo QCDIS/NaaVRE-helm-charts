@@ -45,6 +45,8 @@ This shows how to run a command before starting a user's Jupyter Lab instance in
 
 ```yaml
 jupyterhub:
+  singleuser:
+    lifecycleHooks: null
   vlabs:
     - slug: example-lab
       title: "Example"
@@ -64,6 +66,14 @@ jupyterhub:
           # ... modify 
           /usr/local/bin/start-jupyter-venv.sh
 ```
+
+In this example, the synchronous command runs after `/tmp/init_script.sh` which initializes user's database (`~/NaaVRE/NaaVRE_db.json`), and before `/usr/local/bin/start-jupyter-venv.sh` which starts Jupyter Lab.
+These scripts should be explicitly included in `jupyterhub.vlabs[*].cmd` as shown here.
+If the command does require the database to be initialized, `/tmp/init_script.sh` can be omitted.
+
+> [!IMPORTANT]
+> If `/tmp/init_script.sh` is included in the synchronous command, the lifecycle hooks must be disabled by explicitly setting `jupyterhub.singleuser.lifecycleHooks: null` (otherwise, the script runs twice which can corrupt the user's database).
+> In this case, all virtual labs must have a `cmd` that includes `/tmp/init_script.sh`.
 
 ### TLS certificates with cert-manager
 
