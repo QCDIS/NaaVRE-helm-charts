@@ -30,7 +30,7 @@ argo-workflows:
       spec:
         # must complete in 2d
         activeDeadlineSeconds: 172800
-        # keep completed workflows for min failed for 5min
+        # keep workflows for {{ .Values.argoWorkflows.workflowTTL }} seconds
         ttlStrategy:
           secondsAfterCompletion: {{ .Values.argoWorkflows.workflowTTL }}
           secondsAfterFailure: {{ .Values.argoWorkflows.workflowTTL }}

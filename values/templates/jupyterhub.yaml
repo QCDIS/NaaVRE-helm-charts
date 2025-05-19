@@ -38,8 +38,23 @@ jupyterhub:
         {{- end }}
       JupyterHub:
         authenticator_class: generic-oauth
+    {{- with .Values.jupyterhub.hub.initContainers }}
+    initContainers:
+      {{- toYaml . | nindent 6}}
+    {{- end}}
+    {{- with .Values.jupyterhub.hub.extraVolumes }}
+    extraVolumes:
+      {{- toYaml . | nindent 6}}
+    {{- end}}
+    {{- with .Values.jupyterhub.hub.extraVolumeMounts }}
+    extraVolumeMounts:
+      {{- toYaml . | nindent 6}}
+    {{- end}}
     extraConfig:
-      customkubespawner: |
+      {{- with .Values.jupyterhub.hub.extraConfig }}
+      {{- toYaml . | nindent 6}}
+      {{- end}}
+      custom_kubespawner.py: |
         # Workaround for jupyterhub/kubespawner#877
         # Source: https://discourse.jupyter.org/t/creating-1-pvc-per-profile-and-per-user/31755/5
         from kubespawner import KubeSpawner
@@ -104,10 +119,10 @@ jupyterhub:
       SEARCH_API_ENDPOINT: "{{ .Values.global.externalServices.notebookSearch.apiEndpoint }}"
       SEARCH_API_TOKEN: "{{ .Values.global.externalServices.notebookSearch.apiToken }}"
 
+    {{- with .Values.jupyterhub.singleuser.lifecycleHooks }}
     lifecycleHooks:
-      postStart:
-        exec:
-          command: ["sh", "-c", "/tmp/init_script.sh"]
+      {{- toYaml . | nindent 6}}
+    {{- end}}
 
     profileList:
       {{- range .Values.jupyterhub.vlabs }}
@@ -126,7 +141,5 @@ jupyterhub:
           {{- if .cmd | default "" }}
           cmd:
             {{- toYaml .cmd | nindent 12 }}
-          lifecycle_hooks:
-            postStart: {}
           {{- end }}
       {{- end }}

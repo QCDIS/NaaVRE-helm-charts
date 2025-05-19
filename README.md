@@ -45,6 +45,8 @@ This shows how to run a command before starting a user's Jupyter Lab instance in
 
 ```yaml
 jupyterhub:
+  singleuser:
+    lifecycleHooks: null
   vlabs:
     - slug: example-lab
       title: "Example"
@@ -65,6 +67,14 @@ jupyterhub:
           /usr/local/bin/start-jupyter-venv.sh
 ```
 
+In this example, the synchronous command runs after `/tmp/init_script.sh` which initializes user's database (`~/NaaVRE/NaaVRE_db.json`), and before `/usr/local/bin/start-jupyter-venv.sh` which starts Jupyter Lab.
+These scripts should be explicitly included in `jupyterhub.vlabs[*].cmd` as shown here.
+If the command does require the database to be initialized, `/tmp/init_script.sh` can be omitted.
+
+> [!IMPORTANT]
+> If `/tmp/init_script.sh` is included in the synchronous command, the lifecycle hooks must be disabled by explicitly setting `jupyterhub.singleuser.lifecycleHooks: null` (otherwise, the script runs twice which can corrupt the user's database).
+> In this case, all virtual labs must have a `cmd` that includes `/tmp/init_script.sh`.
+
 ### TLS certificates with cert-manager
 
 This shows how to automatically provision TLS certificates with [cert-manager](https://cert-manager.io/).
@@ -83,6 +93,75 @@ global:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
     tls:
       enabled: true
+```
+
+### Export Prometheus metrics
+
+To export prometheus metrics, add the following to the root values file (generate a random token):
+
+```yaml
+jupyterhub:
+  hub:
+    extraConfig:
+      prometheus.py: |
+        c.JupyterHub.services += [{
+          'name': 'service-prometheus',
+          'api_token': '<a random token>',
+          }]
+        c.JupyterHub.load_roles += [{
+          'name': 'service-metrics-role',
+          'description': 'access metrics',
+          'scopes': [ 'read:metrics'],
+          'services': ['service-prometheus'],
+          }]
+```
+
+### Customize the Jupyter Hub templates
+
+To customize the Jupyter Hub templates ([doc](https://jupyterhub.readthedocs.io/en/stable/howto/templates.html)), add the following to the root values:
+
+```yaml
+jupyterhub:
+  hub:
+    initContainers:
+      - name: git-clone-templates
+        image: alpine/git
+        args:
+          - clone
+          - --single-branch
+          - --branch=lifeWatch-jh-4
+          - --depth=1
+          - --
+          - https://github.com/QCDIS/k8s-jhub.git
+          - /etc/jupyterhub/custom
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+          - name: hub-templates
+            mountPath: /etc/jupyterhub/custom
+      - name: copy-static
+        image: busybox:1.28
+        command: ["sh", "-c", "mv /etc/jupyterhub/custom/static/* /usr/local/share/jupyterhub/static/external"]
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+          - name: hub-templates
+            mountPath: /etc/jupyterhub/custom
+          - name: hub-static
+            mountPath: /usr/local/share/jupyterhub/static/external
+    extraVolumes:
+      - name: hub-templates
+        emptyDir: { }
+      - name: hub-static
+        emptyDir: { }
+    extraVolumeMounts:
+      - name: hub-templates
+        mountPath: /etc/jupyterhub/custom
+      - name: hub-static
+        mountPath: /usr/local/share/jupyterhub/static/external
+    extraConfig:
+      templates.py: |
+        c.JupyterHub.template_paths = ['/etc/jupyterhub/custom/templates']
 ```
 
 ## Limitations
